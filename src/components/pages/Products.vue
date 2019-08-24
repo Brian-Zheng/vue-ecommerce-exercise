@@ -1,5 +1,6 @@
 <template>
   <div>
+    <loading :active.sync="isLoading"></loading>
     <div class="text-right">
       <button class="btn btn-primary mt-4" @click="openModal(true)">建立新的產品</button>
     </div>
@@ -224,7 +225,8 @@ export default {
       isNew: false,
       status: {
         fileUploading: false
-      }
+      },
+      isLoading: false
     };
   },
   methods: {
@@ -232,8 +234,10 @@ export default {
       const api = `${process.env.API_PATH}/api/${process.env.CUSTOM_PATH}/admin/products`;
       console.log(api);
       const vm = this;
+      vm.isLoading = true;
       this.$http.get(api).then(response => {
         console.log(response.data);
+        vm.isLoading = false;
         if (response.data.success) {
           vm.products = response.data.products;
         }
@@ -293,7 +297,7 @@ export default {
       const vm = this;
       const formData = new FormData();
       formData.append("file-to-upload", uploadedFile);
-      const url = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/admin/upload`;
+      const url = `${process.env.API_PATH}/api/${process.env.CUSTOM_PATH}/admin/upload`;
       vm.status.fileUploading = true;
       this.$http
         .post(url, formData, {
