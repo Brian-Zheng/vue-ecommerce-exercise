@@ -321,20 +321,20 @@ export default {
       const url = `${process.env.API_PATH}/api/${process.env.CUSTOM_PATH}/order`;
       const order = vm.form;
       // vm.isLoading = true;
-      this.$validator.validate().then(result => {
-        if (result) {
-          this.$http.post(url, { data: order }).then(response => {
-            console.log("訂單已建立", response);
-            if (response.data.success) {
-              vm.$router.push(`/customer_checkout/${response.data.orderId}`);
-            }
-            // vm.getCart();
-            vm.isLoading = false;
-          });
-        } else {
-          console.log("欄位不完整");
+      //  this.$validator.validate().then(result => {
+      //  if (result) {
+      this.$http.post(url, { data: order }).then(response => {
+        console.log("訂單已建立", response);
+        if (response.data.success) {
+          vm.$router.push(`/customer_checkout/${response.data.orderId}`);
         }
+        // vm.getCart();
+        vm.isLoading = false;
       });
+      //  } else {
+      //    console.log("欄位不完整");
+      //  }
+      // });
     }
   },
   created() {
