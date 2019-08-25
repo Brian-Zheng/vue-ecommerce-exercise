@@ -54,6 +54,17 @@ export default {
         }
       });
     }
+  },
+  created() {
+    console.log('login?');
+    const vm = this;
+    // 自定義名稱 'messsage:push'
+    // message: 傳入參數
+    // status: 樣式，預設值為 warning
+    vm.$bus.$on('messsage:push', (message, status = 'warning') => {
+      vm.updateMessage(message, status);
+    });
+    // vm.$bus.$emit('messsage:push');
   }
 };
 </script>

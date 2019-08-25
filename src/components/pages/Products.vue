@@ -33,7 +33,8 @@
       </tbody>
     </table>
 
-    <nav aria-label="Page navigation example">
+    <PageInfo :paginationData="pagination" @getProductsHook="getProducts"></PageInfo>
+    <!-- <nav aria-label="Page navigation example">
       <ul class="pagination">
         <li class="page-item" :class="{'disabled': !pagination.has_pre}">
           <a
@@ -66,7 +67,7 @@
           </a>
         </li>
       </ul>
-    </nav>
+    </nav> -->
 
     <!-- Modal -->
     <div
@@ -252,8 +253,10 @@
 
 <script>
 import $ from "jquery";
+import PageInfo from "@/components/Pagination";
 
 export default {
+  components: { PageInfo: PageInfo },
   data() {
     return {
       products: [],
@@ -268,6 +271,8 @@ export default {
   },
   methods: {
     getProducts(page = 1) {
+      console.log("components hook trigger");
+
       const api = `${process.env.API_PATH}/api/${process.env.CUSTOM_PATH}/admin/products?page=${page}`;
       console.log(api);
       const vm = this;
