@@ -32,6 +32,42 @@
         </tr>
       </tbody>
     </table>
+
+    <nav aria-label="Page navigation example">
+      <ul class="pagination">
+        <li class="page-item" :class="{'disabled': !pagination.has_pre}">
+          <a
+            class="page-link"
+            href="#"
+            aria-label="Previous"
+            @click.prevent="getProducts(pagination.current_page - 1)"
+          >
+            <span aria-hidden="true">&laquo;</span>
+            <span class="sr-only">Previous</span>
+          </a>
+        </li>
+        <li
+          class="page-item"
+          v-for="(page, key) in pagination.total_pages"
+          :key="key"
+          :class="{'active': pagination.current_page === page}"
+        >
+          <a class="page-link" href="#" @click.prevent="getProducts(page)">{{ page }}</a>
+        </li>
+        <li class="page-item" :class="{'disabled': !pagination.has_next}">
+          <a
+            class="page-link"
+            href="#"
+            aria-label="Next"
+            @click.prevent="getProducts(pagination.current_page + 1)"
+          >
+            <span aria-hidden="true">&raquo;</span>
+            <span class="sr-only">Next</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+
     <!-- Modal -->
     <div
       class="modal fade"
@@ -222,6 +258,7 @@ export default {
     return {
       products: [],
       tempProduct: {},
+      pagination: {},
       isNew: false,
       status: {
         fileUploading: false
@@ -230,8 +267,8 @@ export default {
     };
   },
   methods: {
-    getProducts() {
-      const api = `${process.env.API_PATH}/api/${process.env.CUSTOM_PATH}/admin/products`;
+    getProducts(page = 1) {
+      const api = `${process.env.API_PATH}/api/${process.env.CUSTOM_PATH}/admin/products?page=${page}`;
       console.log(api);
       const vm = this;
       vm.isLoading = true;
@@ -240,6 +277,7 @@ export default {
         vm.isLoading = false;
         if (response.data.success) {
           vm.products = response.data.products;
+          vm.pagination = response.data.pagination;
         }
       });
     },
